@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Go Agro</string>
+    <string name="login">Login</string>
+    <string name="new_user">New User?</string>
+    <string name="enter_valid_password">Enter valid password</string>
+    <string name="enter_valid_email_address">Enter valid email address</string>
+    <string name="todo">TODO</string>
+    <string name="go_agro_agency">Go Agro Agency</string>
+</resources>
