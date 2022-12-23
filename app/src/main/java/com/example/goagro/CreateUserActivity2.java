@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +19,8 @@ import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.regex.Pattern;
 
 public class CreateUserActivity2 extends AppCompatActivity {
     EditText email;
@@ -58,10 +62,14 @@ public class CreateUserActivity2 extends AppCompatActivity {
 
 
                 
-                if (txt_pass1.equals(txt_pass2) && txt_pass1.length() >= 6){
-                   createUser(txt_email, txt_pass1);
+                if (!txt_pass1.equals(txt_pass2)){
+                    Toast.makeText(CreateUserActivity2.this, "Make sure passwords in both the fields are matching to each other", Toast.LENGTH_SHORT).show();
+                }else if (!Patterns.EMAIL_ADDRESS.matcher(txt_email).matches()){
+                    Toast.makeText(CreateUserActivity2.this, "Enter email address in valid format", Toast.LENGTH_SHORT).show();
+                }else if (TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_pass1)){
+                    Toast.makeText(CreateUserActivity2.this, "Don't leave any of the field empty", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(CreateUserActivity2.this, "Make sure passwords in both the fields are same and again lenght of password is larger than 6", Toast.LENGTH_SHORT).show();
+                    createUser(txt_email, txt_pass1);
                 }
             }
         });
@@ -78,15 +86,15 @@ public class CreateUserActivity2 extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(CreateUserActivity2.this, "Email message for verification sent successfully verify the email and then you can log into the account", Toast.LENGTH_LONG).show();
                         startActivity(new Intent(CreateUserActivity2.this, MainActivity.class));
-//                        finish();
+                        finish();
                     }
-                });
-                user.sendEmailVerification().addOnFailureListener(new OnFailureListener() {
+                }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(CreateUserActivity2.this, "Some error occurred while verification email sending", Toast.LENGTH_SHORT).show();
                     }
                 });
+
                 if (task.isComplete()){
                     Toast.makeText(CreateUserActivity2.this, "Success", Toast.LENGTH_SHORT).show();
                 }else{

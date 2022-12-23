@@ -29,7 +29,7 @@ public class IntroActivity2 extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(IntroActivity2.this, MainActivity.class));
                 Toast.makeText(IntroActivity2.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
-//                finish();
+                finish();
             }
         });
     }

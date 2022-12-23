@@ -42,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
         if (user != null && user.isEmailVerified()){
             startActivity(new Intent(MainActivity.this, IntroActivity2.class));
             Toast.makeText(this, "User logged in with previous entries", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(this, "Enter proper data to get logged in", Toast.LENGTH_SHORT).show();
         }
 
         newUserReg.setOnClickListener(new View.OnClickListener() {

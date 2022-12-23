@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#578837"
+    android:background="#22294A"
     tools:context=".MainActivity">
 
     <TextView
@@ -44,7 +44,7 @@
         android:importantForAutofill="no"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
-        android:textColorHint="#000000"
+        android:textColorHint="#EFD579"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +60,7 @@
         android:hint="@string/enter_valid_password"
         android:inputType="textPassword"
         android:minHeight="48dp"
-        android:textColorHint="#000000"
+        android:textColorHint="#EFD579"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/new_user"
-        android:textColor="#000000"
+        android:textColor="#EFD579"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
