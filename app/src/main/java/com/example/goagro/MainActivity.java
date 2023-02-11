@@ -13,11 +13,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     EditText email;
@@ -25,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     TextView newUserReg;
     Button login;
     FirebaseAuth auth;
+
+
+
 
 
     @Override
@@ -35,10 +41,8 @@ public class MainActivity extends AppCompatActivity {
         password = findViewById(R.id.loginPassword);
         newUserReg = findViewById(R.id.newUser);
         login = findViewById(R.id.button);
+        FirebaseApp.initializeApp(this);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-
-
         if (user != null && user.isEmailVerified()){
             startActivity(new Intent(MainActivity.this, IntroActivity2.class));
             Toast.makeText(this, "User logged in with previous entries", Toast.LENGTH_SHORT).show();
@@ -67,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void loginUser(String email, String password){
         auth = FirebaseAuth.getInstance();
-
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {

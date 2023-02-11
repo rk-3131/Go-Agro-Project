@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -19,26 +20,27 @@ import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class CreateUserActivity2 extends AppCompatActivity {
+    EditText name;
     EditText email;
     EditText phone;
     EditText licence;
     EditText pass1;
     EditText pass2;
     Button newUser;
-
     FirebaseAuth auth;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_user2);
+        name = findViewById(R.id.Name);
         email = findViewById(R.id.emailAddress);
         phone = findViewById(R.id.phoneNumber);
         licence = findViewById(R.id.liscenceNumber);
@@ -46,37 +48,34 @@ public class CreateUserActivity2 extends AppCompatActivity {
         pass2 = findViewById(R.id.password2);
         newUser = findViewById(R.id.signUpButton);
         auth = FirebaseAuth.getInstance();
-        
-
 
         newUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String txt_name = name.getText().toString();
                 String txt_email = email.getText().toString();
                 String txt_phone = phone.getText().toString();
                 String txt_licence = licence.getText().toString();
                 String txt_pass1 = pass1.getText().toString();
                 String txt_pass2 = pass2.getText().toString();
+                FirebaseFirestore database = FirebaseFirestore.getInstance();
 
-//                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-
-                
                 if (!txt_pass1.equals(txt_pass2)){
                     Toast.makeText(CreateUserActivity2.this, "Make sure passwords in both the fields are matching to each other", Toast.LENGTH_SHORT).show();
                 }else if (!Patterns.EMAIL_ADDRESS.matcher(txt_email).matches()){
                     Toast.makeText(CreateUserActivity2.this, "Enter email address in valid format", Toast.LENGTH_SHORT).show();
-                }else if (TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_pass1)){
+                }else if (TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_pass1) || TextUtils.isEmpty(txt_name)){
                     Toast.makeText(CreateUserActivity2.this, "Don't leave any of the field empty", Toast.LENGTH_SHORT).show();
                 }else{
-                    createUser(txt_email, txt_pass1);
+                    createUser(txt_name, txt_email, txt_phone, txt_licence, txt_pass1);
                 }
+
             }
         });
 
 
     }
-    public void createUser(String mail, String pass){
+    public void createUser(String name, String mail, String phone, String licence, String pass){
         auth.createUserWithEmailAndPassword(mail, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -85,8 +84,8 @@ public class CreateUserActivity2 extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(CreateUserActivity2.this, "Email message for verification sent successfully verify the email and then you can log into the account", Toast.LENGTH_LONG).show();
+                        storeData(name, mail, phone, licence);
                         startActivity(new Intent(CreateUserActivity2.this, MainActivity.class));
-                        finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -94,13 +93,40 @@ public class CreateUserActivity2 extends AppCompatActivity {
                         Toast.makeText(CreateUserActivity2.this, "Some error occurred while verification email sending", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-                if (task.isComplete()){
-                    Toast.makeText(CreateUserActivity2.this, "Success", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(CreateUserActivity2.this, "Failure", Toast.LENGTH_SHORT).show();
-                }
             }
         });
     }
+
+    public void storeData(String name, String mail, String phone, String licence){
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+        String uid = user.getUid();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> map = new HashMap<>();
+
+        String C_mail = mail;
+        String C_name = name;
+        String C_phone = phone;
+        String C_licence = licence;
+
+        map.put("Mail",mail);
+        map.put("Name",name);
+        map.put("Phone", phone);
+        map.put("licence", licence);
+
+        db.collection(uid).document(name).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(CreateUserActivity2.this, "Information added into database", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(CreateUserActivity2.this, "Some error while adding information into database", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+    }
+
 }

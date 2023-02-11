@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "183830844489",
+    "project_id": "go-agro-project",
+    "storage_bucket": "go-agro-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183830844489:android:f29903d3d1844338c11b98",
+        "android_client_info": {
+          "package_name": "com.example.goagro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "183830844489-fl0b795u1e7emmksdgb5umabldapgss9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC4rYD2BzbZNDFO1rNsD1Kfn1_Sq6Ckg8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "183830844489-fl0b795u1e7emmksdgb5umabldapgss9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
