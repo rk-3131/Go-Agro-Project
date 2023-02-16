@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -58,7 +59,6 @@ public class CreateUserActivity2 extends AppCompatActivity {
                 String txt_licence = licence.getText().toString();
                 String txt_pass1 = pass1.getText().toString();
                 String txt_pass2 = pass2.getText().toString();
-                FirebaseFirestore database = FirebaseFirestore.getInstance();
 
                 if (!txt_pass1.equals(txt_pass2)){
                     Toast.makeText(CreateUserActivity2.this, "Make sure passwords in both the fields are matching to each other", Toast.LENGTH_SHORT).show();
@@ -80,21 +80,41 @@ public class CreateUserActivity2 extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(CreateUserActivity2.this, "Email message for verification sent successfully verify the email and then you can log into the account", Toast.LENGTH_LONG).show();
-                        storeData(name, mail, phone, licence);
-                        startActivity(new Intent(CreateUserActivity2.this, MainActivity.class));
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(CreateUserActivity2.this, "Some error occurred while verification email sending", Toast.LENGTH_SHORT).show();
-                    }
-                });
+
+                if (auth.fetchSignInMethodsForEmail(user.getEmail()) != null){
+                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(CreateUserActivity2.this, "Email message for verification sent successfully verify the email and then you can log into the account", Toast.LENGTH_LONG).show();
+//                        storeData(name, mail, phone, licence);
+                            sendDataToMainActivity(name, mail, phone, licence);
+//                        startActivity(new Intent(CreateUserActivity2.this, MainActivity.class));
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(CreateUserActivity2.this, "Some error occurred while verification email sending", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                else{
+                    Toast.makeText(CreateUserActivity2.this, "Email already registered", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(CreateUserActivity2.this, MainActivity.class));
+                }
+
             }
         });
+    }
+
+    public void sendDataToMainActivity(String name, String email, String phone, String licence){
+        Intent intent = new Intent(CreateUserActivity2.this, MainActivity.class);
+        intent.putExtra("C_name", name);
+        intent.putExtra("C_email", email);
+        intent.putExtra("C_phone", phone);
+        intent.putExtra("C_licence", licence);
+
+        startActivity(intent);
+
     }
 
     public void storeData(String name, String mail, String phone, String licence){

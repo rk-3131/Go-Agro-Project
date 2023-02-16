@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     EditText email;
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         login = findViewById(R.id.button);
         FirebaseApp.initializeApp(this);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+
         if (user != null && user.isEmailVerified()){
             startActivity(new Intent(MainActivity.this, IntroActivity2.class));
             Toast.makeText(this, "User logged in with previous entries", Toast.LENGTH_SHORT).show();
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Don't keep the password and email field empty", Toast.LENGTH_SHORT).show();
                 }else{
                    loginUser(email_text, password_text);
+//                   saveInDatabase();
                 }
             }
         });
@@ -77,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 if (task.isSuccessful()){
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     if (user.isEmailVerified()){
+                        saveInDatabase();
                         startActivity(new Intent(MainActivity.this, IntroActivity2.class));
                     }
                     else{
@@ -87,5 +92,38 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void saveInDatabase(){
+        Intent intent = getIntent();
+        String name = intent.getStringExtra("C_name");
+        String email = intent.getStringExtra("C_email");
+        String phone = intent.getStringExtra("C_phone");
+        String licence = intent.getStringExtra("C_licence");
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userUid = user.getUid();
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        map.put("Name", name);
+        map.put("Email", email);
+        map.put("Phone", phone);
+        map.put("Licence", licence);
+
+        if (name != null){
+            db.collection(userUid).document(name).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()){
+                        Toast.makeText(MainActivity.this, "Data added successfully", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(MainActivity.this, "Problem while adding the data", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
     }
 }
