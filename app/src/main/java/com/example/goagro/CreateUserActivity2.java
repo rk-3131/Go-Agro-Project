@@ -6,12 +6,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,6 +39,8 @@ public class CreateUserActivity2 extends AppCompatActivity {
     EditText pass1;
     EditText pass2;
     Button newUser;
+    ToggleButton seePass1;
+    ToggleButton seePass2;
     FirebaseAuth auth;
 
     @Override
@@ -48,6 +54,8 @@ public class CreateUserActivity2 extends AppCompatActivity {
         pass1 = findViewById(R.id.password1);
         pass2 = findViewById(R.id.password2);
         newUser = findViewById(R.id.signUpButton);
+        seePass1 = findViewById(R.id.toggleButton);
+        seePass2 = findViewById(R.id.toggleButton2);
         auth = FirebaseAuth.getInstance();
 
         newUser.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +78,30 @@ public class CreateUserActivity2 extends AppCompatActivity {
                     createUser(txt_name, txt_email, txt_phone, txt_licence, txt_pass1);
                 }
 
+            }
+        });
+
+        seePass1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    pass1.setTransformationMethod(null);
+                }
+                else{
+                    pass1.setTransformationMethod(new PasswordTransformationMethod());
+                }
+            }
+        });
+
+        seePass2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    pass2.setTransformationMethod(null);
+                }
+                else{
+                    pass2.setTransformationMethod(new PasswordTransformationMethod());
+                }
             }
         });
 

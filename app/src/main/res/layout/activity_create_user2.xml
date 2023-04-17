@@ -117,4 +117,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header" />
 
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        android:layout_width="53dp"
+        android:layout_height="37dp"
+        android:text="ToggleButton"
+        android:textOff="Show"
+        android:textOn="Hide"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/password1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/password1" />
+
+    <ToggleButton
+        android:id="@+id/toggleButton2"
+        android:layout_width="53dp"
+        android:layout_height="37dp"
+        android:text="ToggleButton"
+        android:textOff="Show"
+        android:textOn="Hide"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/password2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/password2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

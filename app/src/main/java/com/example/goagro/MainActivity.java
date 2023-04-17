@@ -6,11 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     TextView newUserReg;
     Button login;
     FirebaseAuth auth;
+    ToggleButton showPass;
 
 
 
@@ -42,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
         password = findViewById(R.id.loginPassword);
         newUserReg = findViewById(R.id.newUser);
         login = findViewById(R.id.button);
+        showPass = findViewById(R.id.toggleButton3);
+        auth = FirebaseAuth.getInstance();
+
         FirebaseApp.initializeApp(this);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -50,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, IntroActivity2.class));
             Toast.makeText(this, "User logged in with previous entries", Toast.LENGTH_SHORT).show();
         }
+
 
         newUserReg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,14 +75,25 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Don't keep the password and email field empty", Toast.LENGTH_SHORT).show();
                 }else{
                    loginUser(email_text, password_text);
-//                   saveInDatabase();
+                }
+            }
+        });
+
+        showPass.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    password.setTransformationMethod(null);
+                }
+                else{
+                    password.setTransformationMethod(new PasswordTransformationMethod());
                 }
             }
         });
     }
 
     public void loginUser(String email, String password){
-        auth = FirebaseAuth.getInstance();
+//        auth = FirebaseAuth.getInstance();
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -112,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         map.put("Phone", phone);
         map.put("Licence", licence);
 
-        if (name != null){
+        if (map != null){
             db.collection(userUid).document(name).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -124,6 +143,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             });
+            map.clear();
+        }else{
+            return;
         }
+
     }
 }
