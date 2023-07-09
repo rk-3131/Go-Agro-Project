@@ -44,6 +44,13 @@ public class IntroActivity2 extends AppCompatActivity {
             }
         });
 
+        weather.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(IntroActivity2.this, WeatherActivity.class));
+            }
+        });
+
     }
 
     @Override
