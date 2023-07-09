@@ -20,18 +20,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class IntroActivity2 extends AppCompatActivity {
     Button logOutButton;
-    Button getDataButton;
-    FirebaseAuth auth;
+    Button weather;
+
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro2);
         logOutButton = findViewById(R.id.logOut);
-        getDataButton = findViewById(R.id.getData);
-        auth = FirebaseAuth.getInstance();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
+        weather = findViewById(R.id.getData);
 
 
 
@@ -45,5 +44,14 @@ public class IntroActivity2 extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (user != null){
+            Toast.makeText(this, "Log Out to go back", Toast.LENGTH_SHORT).show();
+        }else{
+            super.onBackPressed();
+        }
     }
 }

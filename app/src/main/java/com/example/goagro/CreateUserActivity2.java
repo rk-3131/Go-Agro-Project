@@ -35,7 +35,6 @@ public class CreateUserActivity2 extends AppCompatActivity {
     EditText name;
     EditText email;
     EditText phone;
-    EditText licence;
     EditText pass1;
     EditText pass2;
     Button newUser;
@@ -50,7 +49,6 @@ public class CreateUserActivity2 extends AppCompatActivity {
         name = findViewById(R.id.Name);
         email = findViewById(R.id.emailAddress);
         phone = findViewById(R.id.phoneNumber);
-        licence = findViewById(R.id.liscenceNumber);
         pass1 = findViewById(R.id.password1);
         pass2 = findViewById(R.id.password2);
         newUser = findViewById(R.id.signUpButton);
@@ -64,7 +62,6 @@ public class CreateUserActivity2 extends AppCompatActivity {
                 String txt_name = name.getText().toString();
                 String txt_email = email.getText().toString();
                 String txt_phone = phone.getText().toString();
-                String txt_licence = licence.getText().toString();
                 String txt_pass1 = pass1.getText().toString();
                 String txt_pass2 = pass2.getText().toString();
 
@@ -75,7 +72,7 @@ public class CreateUserActivity2 extends AppCompatActivity {
                 }else if (TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_pass1) || TextUtils.isEmpty(txt_name)){
                     Toast.makeText(CreateUserActivity2.this, "Don't leave any of the field empty", Toast.LENGTH_SHORT).show();
                 }else{
-                    createUser(txt_name, txt_email, txt_phone, txt_licence, txt_pass1);
+                    createUser(txt_name, txt_email, txt_phone, txt_pass1);
                 }
 
             }
@@ -107,7 +104,7 @@ public class CreateUserActivity2 extends AppCompatActivity {
 
 
     }
-    public void createUser(String name, String mail, String phone, String licence, String pass){
+    public void createUser(String name, String mail, String phone, String pass){
         auth.createUserWithEmailAndPassword(mail, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -119,7 +116,7 @@ public class CreateUserActivity2 extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             Toast.makeText(CreateUserActivity2.this, "Email message for verification sent successfully verify the email and then you can log into the account", Toast.LENGTH_LONG).show();
 //                        storeData(name, mail, phone, licence);
-                            sendDataToMainActivity(name, mail, phone, licence);
+                            sendDataToMainActivity(name, mail, phone);
 //                        startActivity(new Intent(CreateUserActivity2.this, MainActivity.class));
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -138,12 +135,11 @@ public class CreateUserActivity2 extends AppCompatActivity {
         });
     }
 
-    public void sendDataToMainActivity(String name, String email, String phone, String licence){
+    public void sendDataToMainActivity(String name, String email, String phone){
         Intent intent = new Intent(CreateUserActivity2.this, MainActivity.class);
         intent.putExtra("C_name", name);
         intent.putExtra("C_email", email);
         intent.putExtra("C_phone", phone);
-        intent.putExtra("C_licence", licence);
 
         startActivity(intent);
 

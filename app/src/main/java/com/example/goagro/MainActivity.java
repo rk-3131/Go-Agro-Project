@@ -35,9 +35,6 @@ public class MainActivity extends AppCompatActivity {
     ToggleButton showPass;
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +55,13 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "User logged in with previous entries", Toast.LENGTH_SHORT).show();
         }
 
+        Bundle extras = getIntent().getExtras();
+//        this will be null if we don't have any data from the createuser activity
+
+        if (extras != null){
+            saveInDatabase();
+        }
+//        if we have got something from other activity then we will save in the database
 
         newUserReg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,8 +104,9 @@ public class MainActivity extends AppCompatActivity {
                 if (task.isSuccessful()){
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     if (user.isEmailVerified()){
-                        saveInDatabase();
+//                        saveInDatabase();
                         startActivity(new Intent(MainActivity.this, IntroActivity2.class));
+                        finish();
                     }
                     else{
                         Toast.makeText(MainActivity.this, "Verify your email first and then come back", Toast.LENGTH_SHORT).show();
@@ -118,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
         String name = intent.getStringExtra("C_name");
         String email = intent.getStringExtra("C_email");
         String phone = intent.getStringExtra("C_phone");
-        String licence = intent.getStringExtra("C_licence");
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -129,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
         map.put("Name", name);
         map.put("Email", email);
         map.put("Phone", phone);
-        map.put("Licence", licence);
 
         if (map != null){
             db.collection(userUid).document(name).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
