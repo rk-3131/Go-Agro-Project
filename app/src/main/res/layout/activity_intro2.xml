@@ -36,7 +36,7 @@
         android:id="@+id/getData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Weather"
+        android:text="Converter"
         app:layout_constraintBaseline_toBaselineOf="@+id/logOut"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/logOut" />

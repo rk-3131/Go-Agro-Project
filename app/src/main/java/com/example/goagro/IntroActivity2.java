@@ -20,7 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class IntroActivity2 extends AppCompatActivity {
     Button logOutButton;
-    Button weather;
+    Button converter;
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -30,7 +30,7 @@ public class IntroActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro2);
         logOutButton = findViewById(R.id.logOut);
-        weather = findViewById(R.id.getData);
+        converter = findViewById(R.id.getData);
 
 
 
@@ -44,10 +44,10 @@ public class IntroActivity2 extends AppCompatActivity {
             }
         });
 
-        weather.setOnClickListener(new View.OnClickListener() {
+        converter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(IntroActivity2.this, WeatherActivity.class));
+                startActivity(new Intent(IntroActivity2.this, Converter.class));
             }
         });
 
