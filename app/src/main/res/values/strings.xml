@@ -6,4 +6,8 @@
     <string name="enter_valid_email_address">Enter valid email address</string>
     <string name="todo">TODO</string>
     <string name="go_agro_agency">Go Agro Agency</string>
+    <string-array name="conversion_options">
+        <item>Acres to Hectare</item>
+        <item>Hectare to Acres</item>
+    </string-array>
 </resources>
