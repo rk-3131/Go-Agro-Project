@@ -21,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class IntroActivity2 extends AppCompatActivity {
     Button logOutButton;
     Button converter;
+    Button news;
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -31,6 +32,7 @@ public class IntroActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_intro2);
         logOutButton = findViewById(R.id.logOut);
         converter = findViewById(R.id.getData);
+        news = findViewById(R.id.newsButton);
 
 
 
@@ -48,6 +50,13 @@ public class IntroActivity2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(IntroActivity2.this, Converter.class));
+            }
+        });
+
+        news.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(IntroActivity2.this, NewsActivity.class));
             }
         });
 
