@@ -1,11 +1,14 @@
 package com.example.goagro;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
@@ -36,9 +39,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         holder.descriptionTextView.setText(newsArticle.getDescription());
 
         // Load the article image using Picasso (or any other image-loading library)
+//        Picasso.get().load(imageUrl).into(imageView);
+
+        String imageUrl = newsArticle.getImageUrl();
+        Log.d("ImageURL", "URL: " + imageUrl);
+
         Picasso.get()
                 .load(newsArticle.getImageUrl())
-                .placeholder(R.drawable.weather_bg) // Add a placeholder image resource
+                .placeholder(R.drawable.no_image) // Add a placeholder image resource
                 .into(holder.imageView);
 
     }

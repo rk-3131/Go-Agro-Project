@@ -58,7 +58,6 @@ public class NewsActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<NewsResponse> call, Throwable t) {
                 progress.setVisibility(View.GONE);
-                // Handle the failure here
             }
         });
     }
