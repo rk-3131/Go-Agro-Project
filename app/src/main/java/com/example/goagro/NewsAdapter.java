@@ -35,20 +35,59 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
         NewsArticle newsArticle = newsList.get(position);
 
-        holder.titleTextView.setText(newsArticle.getTitle());
-        holder.descriptionTextView.setText(newsArticle.getDescription());
+        Translation_API title_translate = new Translation_API();
+
+        title_translate.setOnTranslationCompleteListener(new Translation_API.OnTranslationCompleteListener() {
+            @Override
+            public void onStartTranslation() {
+                // Here, you can perform initial work before translating the text, like displaying a progress bar.
+            }
+
+            @Override
+            public void onCompleted(String text) {
+                // Log the translated text to check if it's coming correctly.
+                Log.d("Translation", "Translated Text: " + text);
+                // Update the UI with the translated text.
+                holder.titleTextView.setText(text);
+//                holder.descriptionTextView.setText(text);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                // Handle translation error if needed.
+            }
+        });
+
+        // Translate the news article's title.
+        title_translate.execute(newsArticle.getTitle(), "en", "mr");
+//        translate.execute(newsArticle.getDescription(), "en", "mr");
+
+        Translation_API description_translate = new Translation_API();
+        description_translate.setOnTranslationCompleteListener(new Translation_API.OnTranslationCompleteListener() {
+            @Override
+            public void onStartTranslation() {
+
+            }
+
+            @Override
+            public void onCompleted(String text) {
+                holder.descriptionTextView.setText(text);
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        });
+        description_translate.execute(newsArticle.getDescription(), "en", "mr");
 
         // Load the article image using Picasso (or any other image-loading library)
-//        Picasso.get().load(imageUrl).into(imageView);
-
         String imageUrl = newsArticle.getImageUrl();
         Log.d("ImageURL", "URL: " + imageUrl);
-
         Picasso.get()
-                .load(newsArticle.getImageUrl())
-                .placeholder(R.drawable.no_image) // Add a placeholder image resource
+                .load(imageUrl)
+                .placeholder(R.drawable.no_image)
                 .into(holder.imageView);
-
     }
 
     @Override
@@ -69,4 +108,3 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         }
     }
 }
-
