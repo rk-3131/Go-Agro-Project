@@ -22,7 +22,7 @@ public class IntroActivity2 extends AppCompatActivity {
     Button logOutButton;
     Button converter;
     Button news;
-
+    Button weather;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -33,6 +33,7 @@ public class IntroActivity2 extends AppCompatActivity {
         logOutButton = findViewById(R.id.logOut);
         converter = findViewById(R.id.getData);
         news = findViewById(R.id.newsButton);
+        weather = findViewById(R.id.getWeather);
 
 
 
@@ -57,6 +58,13 @@ public class IntroActivity2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(IntroActivity2.this, NewsActivity.class));
+            }
+        });
+
+        weather.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(IntroActivity2.this, WeatherActivity.class));
             }
         });
 
